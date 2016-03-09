@@ -1,13 +1,12 @@
 import { Router } from 'express';
 import persons from './persons';
 
-let router = Router();
+const router = Router();
 
-router.route('/', (req, res) => {
-    res.json({
-        message: "Hello Word! 🎉"
-    });
-});
+router.route('/')
+  .get((req, res) => {
+    res.render('index', { title: 'Hello Express', message: 'welcome to express!' });
+  });
 
 router.use(persons);
 

@@ -1,51 +1,59 @@
-let persons = [];
+const persons = [];
 
-export function getAll(req, res, next){
-    res.json(persons);
+export function getAll(req, res, next) {
+  res.json(persons);
 }
-export function postOne(req, res, next){
-    let person = {
-        id: persons.length + 1,
-        name: req.body.name,
-        age: req.body.age
-    };
-    persons.push(person);
-    res.json(person);
+
+export function postOne(req, res, next) {
+  let person = {
+    id: persons.length + 1,
+    name: req.body.name,
+    age: req.body.age
+  };
+
+  persons.push(person);
+
+  res.json(person);
 }
-export function getOne(req, res, next){
-    let person = persons.filter((person) => {
-        return (person.id === parseInt(req.params.id));
-    });
-    if(person.length === 0)
-        return next(new Error('Pessoa não encontrada'));
-    res.json(person[0]);
+
+export function getOne(req, res, next) {
+  const result = persons.find((person) => {
+    return (person.id === parseInt(req.params.id));
+  });
+
+  if (result == void(0))
+    return next(new Error('pessoa nao encontrada'));
+
+  res.json(result);
 }
-export function putOne(req, res, next){
-    let person = persons.filter((person) => {
-        return (person.id === parseInt(req.params.id));
-    });
-    if(person.length === 0)
-        return next(new Error('Pessoa não encontrada'));
 
-    let index = persons.indexOf(person);
+export function putOne(req, res, next) {
+  const index = persons.findIndex((person) => {
+    return (person.id === parseInt(req.params.id));
+  });
 
-    person[0].name  = req.body.name || person[0].name;
-    person[0].age   = req.body.age  || person[0].age;
+  if (index === -1)
+    return next(new Error('pessoa nao encontrada'));
 
-    persons[index]  = person[0];
+  const result = {
+    name: req.body.name || persons[index].name,
+    age: req.body.name || persons[index].age
+  };
 
-    res.json(person[0]);
+  persons[index] = result;
+
+  res.json(persons[index]);
 }
-export function deleteOne(req, res, next){
-    let person = persons.filter((person) => {
-        return (person.id === parseInt(req.params.id));
-    });
-    if(person.length === 0)
-        return next(new Error('Pessoa não encontrada'));
 
-    let index = persons.indexOf(person);
+export function deleteOne(req, res, next) {
+  const index = persons.findIndex((person) => {
+    return (person.id === parseInt(req.params.id));
+  });
 
-    persons.splice(index, 1);
+  if (index === -1)
+    return next(new Error('pessoa nao encontrada'));
 
-    res.json(person[0]);
+  const removed = persons.splice(index, 1);
+
+  res.json(removed[0]);
 }

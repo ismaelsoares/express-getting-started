@@ -1,14 +1,15 @@
-import { Router } from "express";
+import { Router } from 'express';
 import * as persons from '../middlewares/persons';
-let router = Router();
+
+const router = Router();
 
 router.route('/persons')
-    .get(persons.getAll)
-    .post(persons.postOne);
+  .get(persons.getAll)
+  .post(persons.postOne);
 
 router.route('/persons/:id')
-    .get(persons.getOne)
-    .put(persons.putOne)
-    .delete(persons.deleteOne);
+  .get(persons.getOne)
+  .put(persons.putOne)
+  .delete(persons.deleteOne);
 
 export default router;
