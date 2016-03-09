@@ -1,6 +1,8 @@
 import express from 'express';
-import routes from '../routes';
 import bodyParser from 'body-parser';
+
+import routes from '../routes';
+import models from '../models';
 
 const port = 3000;
 const app = express();
@@ -22,8 +24,10 @@ app.use((err, req, res, next) => {
   res.status(500).send(err.message);
 });
 
-app.listen(port, (err) => {
-  if (err) console.error(err);
+models.sequelize.sync().then(() => {
+  app.listen(port, (err) => {
+    if (err) console.error(err);
 
-  console.log(`> servidor iniciado em http://localhost:${port}`);
+    console.log(`> servidor iniciado em http://localhost:${port}`);
+  });
 });
