@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import persons from './persons';
+import login from './login';
 
 const router = Router();
 
@@ -9,5 +10,6 @@ router.route('/')
   });
 
 router.use(persons);
+router.use(login);
 
 export default router;
