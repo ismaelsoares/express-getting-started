@@ -1,59 +1,62 @@
-const persons = [];
+const models = require('../models');
+const User = models.User;
 
 export function getAll(req, res, next) {
-  res.json(persons);
+  User.findAll()
+    .then((users) => {
+      res.json(users);
+    })
+    .catch(next);
 }
 
 export function postOne(req, res, next) {
-  let person = {
-    id: persons.length + 1,
-    name: req.body.name,
-    age: req.body.age
+  const user = {
+    firstName: req.body.first_name,
+    lastName: req.body.last_name
   };
 
-  persons.push(person);
-
-  res.json(person);
+  User.create(user)
+    .then((user) => {
+      res.json(user);
+    })
+    .catch(next);
 }
 
 export function getOne(req, res, next) {
-  const result = persons.find((person) => {
-    return (person.id === parseInt(req.params.id));
-  });
-
-  if (result == void(0))
-    return next(new Error('pessoa nao encontrada'));
-
-  res.json(result);
+  User.findById(req.params.id)
+    .then((user) => {
+      res.json(user);
+    })
+    .catch(next);
 }
 
 export function putOne(req, res, next) {
-  const index = persons.findIndex((person) => {
-    return (person.id === parseInt(req.params.id));
-  });
+  User.findById(req.params.id)
+    .then((user) => {
+      if (!user) return res.send('usuario nao encontrado');
 
-  if (index === -1)
-    return next(new Error('pessoa nao encontrada'));
+      user.firstName = req.params.first_name;
+      user.lastName = req.params.last_name;
 
-  const result = {
-    name: req.body.name || persons[index].name,
-    age: req.body.name || persons[index].age
-  };
-
-  persons[index] = result;
-
-  res.json(persons[index]);
+      return user.save()
+        .then((user) => {
+          res.json(user);
+        })
+        .catch(next);
+    })
+    .catch(next);
 }
 
 export function deleteOne(req, res, next) {
-  const index = persons.findIndex((person) => {
-    return (person.id === parseInt(req.params.id));
-  });
+  User.findById(req.params.id)
+    .then((user) => {
+      if (!user) return res.send('usuario nao encontrado');
 
-  if (index === -1)
-    return next(new Error('pessoa nao encontrada'));
-
-  const removed = persons.splice(index, 1);
-
-  res.json(removed[0]);
+      return user.destroy()
+        .then((user) => {
+          res.json(user);
+        })
+        .catch(next);
+    })
+    .catch(next);
 }
