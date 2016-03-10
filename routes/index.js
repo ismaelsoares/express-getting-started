@@ -10,6 +10,6 @@ router.route('/')
   });
 
 router.use(login);
-router.use(products);
+router.use(persons);
 
 export default router;
