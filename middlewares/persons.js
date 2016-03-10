@@ -10,13 +10,13 @@ export function getAll(req, res, next) {
 }
 
 export function postOne(req, res, next) {
-  const user = {
+  let user = {
     firstName: req.body.first_name,
     lastName: req.body.last_name
   };
 
   User.create(user)
-    .then((user) => {
+    .then((user) =>{
       res.json(user);
     })
     .catch(next);
@@ -32,14 +32,14 @@ export function getOne(req, res, next) {
 
 export function putOne(req, res, next) {
   User.findById(req.params.id)
-    .then((user) => {
+    .then((user) =>{
       if (!user) return res.send('usuario nao encontrado');
 
       user.firstName = req.params.first_name;
       user.lastName = req.params.last_name;
 
       return user.save()
-        .then((user) => {
+        .then((user) =>{
           res.json(user);
         })
         .catch(next);
@@ -49,11 +49,11 @@ export function putOne(req, res, next) {
 
 export function deleteOne(req, res, next) {
   User.findById(req.params.id)
-    .then((user) => {
-      if (!user) return res.send('usuario nao encontrado');
+    .then((user) =>{
+      if(!user) return res.send('usuario nao encontrado');
 
       return user.destroy()
-        .then((user) => {
+        .then((user) =>{
           res.json(user);
         })
         .catch(next);
