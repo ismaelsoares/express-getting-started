@@ -9,7 +9,7 @@ router.route('/')
     res.render('index', { title: 'Hello Express', message: 'welcome to express!' });
   });
 
-router.use(persons);
+router.use(login);
 router.use(products);
 
 export default router;
